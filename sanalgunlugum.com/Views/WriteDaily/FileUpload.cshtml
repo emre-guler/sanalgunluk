@@ -1,0 +1,87 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sanalgunlugum.com - Dosya Ekle</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/mycss/file-upload.css" rel="stylesheet" />
+    <link href="~/Content/mycss/wridedaily.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8 main">
+            <!-- Upload Start -->
+            @using (Html.BeginForm("FileUpload", "WriteDaily", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Görsel veya Video Ekle</button>
+                <div class="image-upload-wrap">
+                    <input class="file-upload-input" type='file' name="inputFile" onchange="readURL(this);" accept="image/*" />
+                    <div class="drag-text">
+                        <h3>Dosyayı buraya sürükle veya seç</h3>
+                    </div>
+                </div>
+                <div class="file-upload-content">
+                    <img class="file-upload-image" src="#" name="imageprc" alt="your image" />
+                    <div class="image-title-wrap">
+                        <button type="submit" onclick="removeUpload()" class="file-image btn-success btn">Dosyayı ekle <span class="image-title"></span></button>
+                    </div>
+                </div>
+            }<br /><br />
+            <a href="/HomePage"><button class="btn btn-success" style="position:absolute;right:20px;">Dosya eklemeyi bitir ve devam et.</button></a>
+            <!-- Upload Finish --><br /><br />
+        </div>
+        <div class="col"></div>
+    </div>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap-notify.min.js"></script>
+    <script>
+        let val = "@ViewBag.First";
+        if (val == "OkImg") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Bildirim! <br>', message: 'Dosya başarı ile kaydedildi!' }, { type: 'success' });
+        } else if (val == "NoImg") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Bir hata oluştu. Lütfen tekrar deneyin!' }, { type: 'danger' });
+        } else if (val == "NoImgType") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Bu dosya türü kaydedilemez!' }, { type: 'danger' });
+        } else if (val == "NoImg") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Dosyanın büyüklüğünden emin olun! (MAX: 10MB)' }, { type: 'danger' });
+        } else if (val == "Connect") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Timeout! Tekrar giriş yapmayı deneyin.' }, { type: 'danger' });
+        }
+    </script>
+    <script>
+        // File Upload
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.image-upload-wrap').hide();
+                    $('.file-upload-image').attr('src', e.target.result);
+                    $('.file-upload-content').show();
+                    $('.image-title').html(input.files[0].name);
+                };
+                reader.readAsDataURL(input.files[0]);
+
+            } else {
+                removeUpload();
+            }
+        }
+
+        function removeUpload() {
+            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+            $('.file-upload-content').hide();
+            $('.image-upload-wrap').show();
+        }
+        $('.image-upload-wrap').bind('dragover', function () {
+            $('.image-upload-wrap').addClass('image-dropping');
+        });
+        $('.image-upload-wrap').bind('dragleave', function () {
+            $('.image-upload-wrap').removeClass('image-dropping');
+        });
+    </script>
+</body>
+</html>

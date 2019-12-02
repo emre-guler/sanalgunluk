@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sanalgunlugum.com - Kayıt Ol</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/mycss/sign.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="diamond"></div>
+    <div class="form-wrap">
+        <div class="indiamond">
+            @using (Html.BeginForm("Index", "SignUp", FormMethod.Post))
+            {
+                <div class="location">
+                    <label for="location">Adın Soyadın</label><br />
+                    <input type="text" name="FullName" placeholder="Selin Aydan, Mert Başaran" /><br />
+                </div>
+                <div class="guests">
+                    <label for="guests">E-Mail Adresin</label><br />
+                    <input type="email" name="EMailAddress" placeholder="xxx@example.com" />
+                </div>
+                <div class="dates">
+                    <div class="arrival">
+                        <label for="arrival">Şifre</label><br />
+                        <input name="Password" type="password" placeholder="******" />
+                    </div>
+                    <div class="departure">
+                        <label for="arrival">Şifre Tekrar</label><br />
+                        <input name="PasswordAgain" type="password" placeholder="******" />
+                    </div>
+                </div>
+                <div class="guests">
+                    <label>Sanalgunlugum.com'a üye olduğunuzda tüm şartları kabul etmiş sayılırsınız.</label>
+                </div>
+                <button class="btn" onclick="animation()" type="submit">Günlük Yazmaya Başla!</button>
+                <a href="/SignIn">Zaten bir hesabınız varsa.</a>
+            }
+        </div>
+    </div>
+    <script>
+        let animation = () => {
+            let diamond = document.querySelector('.indiamond');
+            diamond.style.transform = "rotate(4000deg)";
+            diamond.style.marginLeft = "12000px";
+            diamond.style.opacity = ".5";
+            }
+    </script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap-notify.min.js"></script>
+    <script>
+    let val = "@ViewBag.First";
+        if (val == "Req") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Lütfen bilgileri kontrol ederek tekrar deneyin.' }, { type: 'danger' });
+        }
+        else if (val == "PassErr") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Şifreler uyuşmuyor, lütfen tekrar deneyin.' }, { type: 'danger' });
+        }
+        else if (val == "UsedMail") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Bu E-Posta adresi ile bir üye mevcut, lütfen tekrar deneyin.' }, { type: 'danger' });
+        }
+        else if (val == "Success") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', url: '/SignIn', title: 'Sanalgunlugum.com Bildirim! <br>', message: 'Hesabınız başarı ile oluşturulmuştur, giriş yapmak için tıklayınız!' }, { type: 'success' });
+        }
+        else if (val == "ServerError") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Bildirim! <br>', message: 'Sakin olun sizlik bir durum yok! Hesabınız oluşturulamadı, lütfen tekrar deneyin.' }, { type: 'warning' });
+        }
+    </script>
+</body>
+</html>

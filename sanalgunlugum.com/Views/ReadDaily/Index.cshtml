@@ -1,0 +1,36 @@
+﻿@using sanalgunlugum.com.Models.ViewModels
+@model IEnumerable<ReadDailyViewModel>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sanalgunlugum.com - Read Daily</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+              margin: 0;
+              padding: 0;
+          }
+          .solid-container {
+            height: 100vh;
+          }
+    </style>
+</head>
+<body>
+    @foreach (var book in Model)
+    {
+
+        <div id="cont">
+
+        </div>
+
+        <script>
+            document.getElementById("cont").innerHTML = decodeURI("@book.DailyText");
+        </script>
+    }
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>

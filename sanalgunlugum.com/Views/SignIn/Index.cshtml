@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sanalgunlugum.com - Üye Girişi</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/mycss/sign.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="diamond"></div>
+    <div class="form-wrap">
+            <div class="indiamond">
+                @using (Html.BeginForm("Index", "SignIn", FormMethod.Post))
+                {
+                    <div class="location">
+                        <label for="location">E-Mail Adresin veya Telefonun</label><br />
+                        <input type="email" name="email" placeholder="xxx@example.com" /><br />
+                    </div>
+                    <div class="guests">
+                        <label for="guests">Şifren</label><br />
+                        <input type="password" name="password" placeholder="******" />
+                    </div>
+                    <button class="btn" type="submit" onclick="animation()">Giriş yap!</button>
+                    <a href="/SignUp">Eğer bir hesabınız yoksa.</a>
+                }
+            </div>
+    </div>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap-notify.min.js"></script>
+    <script>
+        let animation = () => {
+            let diamond = document.querySelector('.indiamond');
+            diamond.style.transform = "rotate(4000deg)";
+            diamond.style.marginLeft = "12000px";
+            diamond.style.opacity = ".5";
+        }
+    </script>
+    <script>
+    let val = "@ViewBag.First";
+        if (val == "Err") {
+            $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Lütfen bilgileri kontrol ederek tekrar deneyin.' }, { type: 'danger' });
+        }
+    </script>
+</body>
+</html>

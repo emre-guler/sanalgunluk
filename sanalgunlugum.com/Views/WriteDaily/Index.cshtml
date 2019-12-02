@@ -1,0 +1,226 @@
+﻿@using sanalgunlugum.com.Models.ViewModels
+@model  IEnumerable<FriendTagViewModel>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sanalgunlugum.com | Yeni Günlü Ekle</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=v5vy2ehrkwna8y7cw12grgdbe9aa4a3ew9nayf82p2dlhr43"></script>
+    <script src="~/Scripts/tr_TR.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '#mytextarea',
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            height: 280,
+            language: 'tr_TR',
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+    <link href="~/Content/datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/mycss/file-upload.css" rel="stylesheet" />
+    <link href="~/Content/image-picker.css" rel="stylesheet" />
+    <link href="~/Content/mycss/wridedaily.css" rel="stylesheet" />
+    <style>
+        .selectOptions{
+            box-shadow:1px 3px 20px rgba(17, 17, 17, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8 main">
+            <label>Günlük Başlığını Girin:</label>
+            <input type="text" name="title" id="title" placeholder="Günlük Başlığı" required /><br /><br />
+            <textarea id="mytextarea" name="daily" required></textarea><br /><br />
+            <label>Günlük Moodunuz Seçin: &nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <select name="status" id="selectoption" required class="image-picker show-html">
+                <option value=""></option>
+                <option data-img-src="Content/uplodas/angry.png" value="angry">Sinirli</option>
+                <option data-img-src="Content/uplodas/crying.png" value="crying">Ağlıyor</option>
+                <option data-img-src="Content/uplodas/happy.png" value="happy">Mutlu</option>
+                <option data-img-src="Content/uplodas/love.png" value="love">Sevgi Dolu</option>
+                <option data-img-src="Content/uplodas/sad.png" value="sad">Üzgün</option>
+            </select><br />
+            @{
+                int Count = Convert.ToInt16(ViewBag.Count);
+                if (Count > 0)
+                {
+                    <label> Etiketlemek İstediğiniz Arkadaşınızı Seçin: &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                    <select name="friendtag" required id="block" class="selectOptions">
+                        <option value="" selected disabled>Seçin..</option>
+                        @foreach (var friend in Model)
+                        {
+                            <option value="@friend.Id">@friend.FullName</option>
+                        }
+                    </select><br />
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Arkadaş Eklemek İçin</button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Günlüğüne Arkadaş Ekle</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post">
+                                        <div class="container">
+                                            <label>Arkadaşının Adı Soyadı:</label>
+                                            <input type="text" name="fullname" id="fullname" />
+                                            <label>Biraz Arkadaşından Bahset:</label>
+                                            <input type="text" name="text" id="text" />
+                                            <label>Daha fazla bilgi eklemek için kendi profilinizi ziyaret edebilirsiniz.</label>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                                    <button type="button" onclick="addfriend()" data-dismiss="modal" class="btn btn-primary">Ekle</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $('#myModal').on('shown.bs.modal', function () {
+                            $('#myInput').trigger('focus')
+                        })
+
+                    </script>
+                    <br />
+                    <br />
+                }
+                else
+                {
+                    <label>
+                        Günlüğüne etiketleyebileceğin hiç arkadaşın yok &nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+                            Arkadaş Eklemek İçin Tıkla
+                        </button>
+                    </label>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Günlüğüne Arkadaş Ekle</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <label>Arkadaşının Adı Soyadı:</label>
+                                        <input type="text" name="Fullname" id="fullname" />
+                                        <label>Biraz Arkadaşından Bahset:</label>
+                                        <input type="text" name="text" id="text" />
+                                        <label>Daha fazla bilgi eklemek için kendi profilinizi ziyaret edebilirsiniz.</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                                    <button type="button" onclick="addfriend()" data-dismiss="modal" class="btn btn-primary">Ekle</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $('#myModal').on('shown.bs.modal', function () {
+                            $('#myInput').trigger('focus')
+                        })
+
+                    </script>
+                    <br /><br /><br />
+                }
+            }
+            <label>Günlüğü Yazdığınız Tarihi Seçin:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type='datetime' id="datepick" placeholder="Tıklayın.." name="datepick" required style="width:20%;height:20px;" data-language='en' class="datepicker-here" data-position='top left' /><br /><br />
+            <label> Kitap Renginizi Seçin: &nbsp; &nbsp; &nbsp; &nbsp;</label>
+            <select name="bookColor" id="bookColor" required class="selectOptions">
+                <option value="" selected disabled>Lütfen rengi seçin..</option>
+                <option value="blue">Mavi - Blue</option>
+                <option value="red">Kırmızı - Red</option>
+                <option value="green">Yeşil - Green </option>
+            </select><br />
+            <button type="reset" class="btn btn-danger btn-sm clear">Temizle</button>
+            <button type="submit" onclick="send()" class="btn btn-success btn-sm save">Kaydet</button>
+        </div>
+        <div class="col"></div>
+    </div>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap-notify.min.js"></script>
+    <script>
+    function send() {
+        let titletext = document.querySelector('#title').value;
+        let dailyText = encodeURI(tinyMCE.activeEditor.getContent());
+        let moodSelect = document.querySelector('#selectoption');
+        let mood = moodSelect.options[moodSelect.selectedIndex].value;
+        let date = document.querySelector('#datepick').value;
+        let color = document.querySelector('#bookColor').value;
+        let friend = document.querySelector("#block").value;
+        $.ajax({
+            url: '@Url.Action("Index", "WriteDaily")',
+            type: 'POST',
+            datatype: 'json',
+            data: { title: titletext, daily: dailyText, status: mood, datepick: date, bookColor: color, friendTag: friend},
+            success: function (data) {
+                let response = data.res
+                if (response == "Err") {
+                    $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Lütfen bilgileri eksiksiz şekilde doldurarak tekrar deneyiniz.' }, { type: 'danger' });
+                } else if (response == "ServerErr") {
+                    $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Uyarı! <br>', message: 'Lütfen tekrar deneyin!' }, { type: 'warning' });
+                } else if (response == "Success") {
+                    $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Bildirim! <br>', message: 'Günlüğünüz başarı ile kaydedildi! Günlüğünüze fotoğraf, video eklemek için tıklayın.', url: '/WriteDaily/FileUpload', target:"_self" }, { type: 'success' });
+                }
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+    </script>
+    <script src="~/Scripts/datepicker.min.js"></script>
+    <script src="~/Scripts/datepicker.en.js"></script>
+    <script src="~/Scripts/image-picker.min.js"></script>
+    <script>
+        $('#datepick').datepicker({
+            maxDate: new Date()
+        })
+    $("select").imagepicker({
+    })
+    function addfriend() {
+        let Fname = document.querySelector("#fullname").value;
+        let txt = document.querySelector("#text").value;
+        $.ajax({
+            url: '@Url.Action("AddFriend","WriteDaily")',
+            type: 'POST',
+            data: { fullname:Fname, text:txt },
+            success: function (data) {
+                let response = data.res
+                if (response == "Success") {
+                     $.notify({ icon: 'glyphicon glyphicon-warning-sign', title: 'Sanalgunlugum.com Bildirim! <br>', message: 'Kişi başarı ile kaydedildi.' }, { type: 'success' });
+                }
+            },
+            error: function (data){
+
+            }
+        });
+    }
+    document.getElementById("block").style.display = "block";
+    document.getElementById("block").style.border = "none";
+    document.getElementById("bookColor").style.display = "block";
+    document.getElementById("bookColor").style.border = "none";
+    </script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+</body>
+</html>
